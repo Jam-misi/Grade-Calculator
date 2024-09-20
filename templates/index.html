@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <style>
+        body {
+            font-family: "Didot";
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000000;
+            background-image: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWt0dHJiczNjZ3Z2cjN0eDFkcjd5YzF6ZW1hYjVydHVyNHBzMzZ5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JqwCffbeIfAfO46H8t/giphy.gif');
+            background-attachment: fixed;
+            background-size: cover;
+            
+        }
+        .container {
+            background-color: #CEB992;
+            padding-right: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 1000px;
+            height: 650px;
+            font-size: 30px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+            
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-left: 15px;
+            text-align: justify;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ffffff;   
+            border-radius: 5px;
+            margin-left: 15px;         
+        }
+    </style>
+</head>
+<div class="container">
+    <h1 style="font-style: Didot; color:rgb(33, 35, 36)">Grade Calculator</h1>
+    
+    <!-- Form to input Prelim Grade -->
+    <form method="POST">
+        <label for="prelim_grade" style="font-style: Didot; color:rgb(33, 35, 36)">Enter your Prelim Grade:</label>
+        <input type="text" id="prelim_grade" name="prelim_grade" required>
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if pass_message %}
+        <div class="result">
+            <h2 style="margin-left: 18px; ">Results:</h2>
+            <p style="margin-left: 25px; margin-right: 25px;">{{ pass_message }}</p>
+            <p style="margin-left: 25px; margin-right: 25px;">{{ deans_message }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
