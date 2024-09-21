@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <style>
+        body {
+            font-family: "Didot";
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000000;
+            background-image: url('https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWt0dHJiczNjZ3Z2cjN0eDFkcjd5YzF6ZW1hYjVydHVyNHBzMzZ5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JqwCffbeIfAfO46H8t/giphy.gif');
+            background-attachment: fixed;
+            background-size: cover;
+        }
+        .container {
+            background-color: #CEB992;
+            padding-right: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 1000px;
+            height: 650px;
+            font-size: 30px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            margin-left: 15px;
+            text-align: justify;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            margin-left: 15px;
+        }
+    </style>
+    <!-- PyScript CDN -->
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 style="font-style: Didot; color:rgb(33, 35, 36)">Grade Calculator</h1>
+
+        <!-- Form to input Prelim Grade -->
+        <label for="prelim_grade" style="font-style: Didot; color:rgb(33, 35, 36)">Enter your Prelim Grade:</label>
+        <input type="number" id="prelim_grade" name="prelim_grade" required>
+        <button id="calculateBtn">Calculate</button>
+
+        <div id="results" class="result"></div>
+        <div id="errors" class="error"></div>
+    </div>
+
+    <!-- PyScript code -->
+    <py-script>
+        def calculate_required_grades(prelim_grade): 
+            target_grade = 75
+            deans_lister_grade = 90
+            prelim_weight = 0.20
+            midterm_weight = 0.30
+            final_weight = 0.50
+
+            prelim_contribution = prelim_grade * prelim_weight
+            remaining_contribution_needed = target_grade - prelim_contribution
+
+            min_midterm_grade = remaining_contribution_needed / (midterm_weight + final_weight)
+            min_final_grade = min_midterm_grade
+
+            max_possible_midterm_and_final = (100 * midterm_weight) + (100 * final_weight)
+            if remaining_contribution_needed > max_possible_midterm_and_final:
+                return (f"Prelim Grade: {prelim_grade}\nIt is difficult to pass regardless of your midterm and final grades.",
+                        "It is not possible to be a Dean’s Lister.")
+
+            min_midterm_grade = min(max(min_midterm_grade, 0), 100)
+            min_final_grade = min(max(min_final_grade, 0), 100)
+
+            deans_contribution_needed = deans_lister_grade - prelim_contribution
+            deans_midterm_grade = deans_contribution_needed / (midterm_weight + final_weight)
+            deans_final_grade = deans_midterm_grade
+
+            deans_midterm_grade = min(max(deans_midterm_grade, 0), 100)
+            deans_final_grade = min(max(deans_final_grade, 0), 100)
+
+            if deans_midterm_grade < 100 and deans_final_grade < 100:
+                deans_message = (f"The required grade for you to be a Dean’s Lister is: {deans_midterm_grade:.2f} (Midterm) and {deans_final_grade:.2f} (Finals).")
+            else:
+                deans_message = "It is not possible to be a Dean’s Lister."
+
+            pass_message = (f"Prelim Grade: {prelim_grade} - \n"
+                            f"Required Midterm Grade: {min_midterm_grade:.2f} - \n"
+                            f"Required Final Grade: {min_final_grade:.2f} - \n"
+                            "You have a chance to pass!")
+
+            return pass_message, deans_message
+
+        def calculate_grades(event=None):
+            prelim_grade_input = Element("prelim_grade").element.value
+            if prelim_grade_input:
+                prelim_grade = float(prelim_grade_input)
+
+                pass_message, deans_message = calculate_required_grades(prelim_grade)
+                results_div = Element("results")
+                results_div.element.innerHTML = f"Results:{pass_message} --- {deans_message}"
+            else:
+                results_div = Element("errors")
+                results_div.element.innerHTML = "Please enter a valid Prelim Grade."
+            
+            if prelim_grade < 0 or prelim_grade > 100:
+                results_div.element.innerHTML = "Grade must be between 0 and 100."
+                
+        # Attach the button click event handler
+        Element("calculateBtn").element.onclick = calculate_grades
+    </py-script>
+</body>
+</html>
