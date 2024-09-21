@@ -82,7 +82,6 @@
         <button id="calculateBtn">Calculate</button>
 
         <div id="results" class="result"></div>
-        <div id="errors" class="error"></div>
     </div>
 
     <!-- PyScript code -->
@@ -136,7 +135,7 @@
                 results_div = Element("results")
                 results_div.element.innerHTML = f"Results:{pass_message} --- {deans_message}"
             else:
-                results_div = Element("errors")
+                results_div = Element("results")
                 results_div.element.innerHTML = "Please enter a valid Prelim Grade."
             
             if prelim_grade < 0 or prelim_grade > 100:
